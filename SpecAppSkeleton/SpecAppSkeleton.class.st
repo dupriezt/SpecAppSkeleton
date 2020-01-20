@@ -11,32 +11,22 @@ Class {
 }
 
 { #category : #specs }
-SpecAppSkeleton class >> buttonConstraints [
+SpecAppSkeleton class >> defaultSpec [
+	"Definition of the layout moved to the instance side, for easier editing (no need to switch between the instance and class side in the code browser"
+	^ self new defaultSpec_
+]
+
+{ #category : #specs }
+SpecAppSkeleton class >> open [
+	<script>
+	self new openWithSpec.
+]
+
+{ #category : #specs }
+SpecAppSkeleton >> buttonConstraints [
 	"Defines a common constraint to be used for all buttons"
 	^ [ :cstr | cstr width: 120. cstr height: 20 ]
 	
-]
-
-{ #category : #specs }
-SpecAppSkeleton class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		add: (SpPanedLayout newHorizontal
-			add: #pointTable;
-			add: #textField;
-			yourself
-		);
-		add: (SpBoxLayout newHorizontal
-			add: #inspectButton withConstraints: self buttonConstraints;
-			add: #executeButton withConstraints: self buttonConstraints;
-			yourself	
-		) withConstraints: [ :cstr | cstr height: 30 ];
-		yourself.
-]
-
-{ #category : #specs }
-SpecAppSkeleton class >> title [
-	^ 'Spec App Skeleton'
 ]
 
 { #category : #data }
@@ -62,6 +52,23 @@ SpecAppSkeleton >> connectPresenters [
 	"The method connectPresenters defines the interactions between the dif- ferent widgets. By connecting the behaviors of the different widgets it speci- fies the overall presentation, i.e., how the overall UI responds to interactions by the user. Usually this method consists of specifications of actions to per- form when a certain event is received by a widget. The whole interaction flow of the UI then emerges from the propagation of those events."
 	inspectButton action: [ self inspectSelectedItem ].
 	executeButton action: [ self executeCode ]
+]
+
+{ #category : #specs }
+SpecAppSkeleton >> defaultSpec_ [
+
+	^ SpBoxLayout newVertical
+		add: (SpPanedLayout newHorizontal
+			add: #pointTable;
+			add: #textField;
+			yourself
+		);
+		add: (SpBoxLayout newHorizontal
+			add: #inspectButton withConstraints: self buttonConstraints;
+			add: #executeButton withConstraints: self buttonConstraints;
+			yourself	
+		) withConstraints: [ :cstr | cstr height: 30 ];
+		yourself.
 ]
 
 { #category : #'button action' }
@@ -98,9 +105,19 @@ SpecAppSkeleton >> initializePresenters [
 	inspectButton label: 'Inspect Selected'; icon: (self iconManager iconNamed: #glamorousInspect).
 	
 	executeButton := self newButton. "SpButtonPresenter"
-	executeButton label: 'Execute'; icon: (self iconManager iconNamed: #glamorousGo)..
+	executeButton label: 'Execute'; icon: (self iconManager iconNamed: #glamorousGo).
 	
 	"I don't know how to do focus order"
+]
+
+{ #category : #initialization }
+SpecAppSkeleton >> initializeWindow: aWindowPresenter [
+	
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter
+		title: 'Spec App Skeleton';
+		initialExtent: 500@280; "initial width@height of the window"
+		windowIcon: (self iconManager iconNamed: #home) "Icon that will be shown in the bottom windowbar for this window"
 ]
 
 { #category : #'button action' }
