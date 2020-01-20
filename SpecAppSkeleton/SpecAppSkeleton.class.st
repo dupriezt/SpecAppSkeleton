@@ -51,7 +51,7 @@ SpecAppSkeleton >> collectionOfPoints [
 SpecAppSkeleton >> connectPresenters [
 	"The method connectPresenters defines the interactions between the dif- ferent widgets. By connecting the behaviors of the different widgets it speci- fies the overall presentation, i.e., how the overall UI responds to interactions by the user. Usually this method consists of specifications of actions to per- form when a certain event is received by a widget. The whole interaction flow of the UI then emerges from the propagation of those events."
 	inspectButton action: [ self inspectSelectedItem ].
-	executeButton action: [ self executeCode ]
+	executeButton action: [ self inform: 'Todo' ]
 ]
 
 { #category : #specs }
@@ -78,7 +78,7 @@ SpecAppSkeleton >> executeCode [
 { #category : #icon }
 SpecAppSkeleton >> iconManager [
 	"This is where this application gets its icons.
-	To see the list of availlable icons, inspect 'Smalltalk ui icons' and click on the 'Icons' tab"
+	To see the list of available icons, inspect 'Smalltalk ui icons' and click on the 'Icons' tab"
 	^ Smalltalk ui icons
 ]
 
@@ -98,9 +98,10 @@ SpecAppSkeleton >> initializePresenters [
 	pointTable addColumn: indexColumn; addColumn: xColumn; addColumn: yColumn.
 	pointTable items: self collectionOfPoints.
 		
-	textField := self newCode. "SpCodePresenter"
-	textField placeholder: 'Variable "data" will be bound to the list of points'; autoAccept: true.
+	textField := self newText. "SpTextPresenter"
+	textField placeholder: 'placeholder text'; autoAccept: true. "You cans et something to happen when the user 'accepts' the code (ctrl-s, like to save a method)"
 	
+	"These two buttons get their actions assigned in #connectPresenters"
 	inspectButton := self newButton. "SpButtonPresenter"
 	inspectButton label: 'Inspect Selected'; icon: (self iconManager iconNamed: #glamorousInspect).
 	
