@@ -13,13 +13,13 @@ Class {
 { #category : #specs }
 SpecAppSkeleton class >> defaultSpec [
 	"Definition of the layout moved to the instance side, for easier editing (no need to switch between the instance and class side in the code browser"
-	^ self new defaultSpec_
+	^ self basicNew defaultSpec_
 ]
 
 { #category : #specs }
 SpecAppSkeleton class >> open [
 	<script>
-	self new openWithSpec.
+	(self on: nil "model object, will be used as argument in #setModelBeforeInitialization:") openWithSpec.
 ]
 
 { #category : #specs }
@@ -124,4 +124,12 @@ SpecAppSkeleton >> initializeWindow: aWindowPresenter [
 { #category : #'button action' }
 SpecAppSkeleton >> inspectSelectedItem [
 	pointTable selectedItems inspect.
+]
+
+{ #category : #initialization }
+SpecAppSkeleton >> setModelBeforeInitialization: anObject [
+	"This method is called before the initialisation methods (like #initializePresenters), when this presenter instance is created by sending #on: to its class. It is typically used to fill the instance variables of this presenter instance before the initilisation methods get called.
+	@anObject is the argument provided to the #on: call. It typically contains all the values to be put into the instance variables"
+	
+	"instanceVariable1 := anObject getValueForInstanceVariable1"
 ]
